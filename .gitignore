@@ -16,4 +16,7 @@
 # Ignore txt files
 *.txt
 
+#Ignore csv files
+*.csv
+
 !makefile
