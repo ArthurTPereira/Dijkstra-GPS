@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #include "grafo.h"
-
+#include "atualizacao.h"
 #define ERROR -1
 
 struct aresta {
@@ -35,7 +35,7 @@ void liberaGrafo(Aresta** grafo, int m) {
     free(grafo);
 }
 
-Aresta** initGrafo(FILE* arquivoEntrada, int* n, int* m, int* vOrigem, int* vDestino) {
+Aresta** initGrafo(FILE* arquivoEntrada, int* n, int* m, int* vOrigem, int* vDestino, Atualizacoes* atualizacoes) {
 
     // Alocacao do buffer de leitura
     size_t bufferSize = 64;
@@ -76,7 +76,12 @@ Aresta** initGrafo(FILE* arquivoEntrada, int* n, int* m, int* vOrigem, int* vDes
         i++;
     }
 
-    // ! TODO: Armazenar as alteracoes de velocidade das vias
+    // Preenche as atualizacoes
+    int instante;
+    while (getline(&buffer, &bufferSize, arquivoEntrada) != -1) {
+        sscanf(buffer, "%d;%d;%d;%f", &instante, &origem, &destino, &velocidadeMedia);
+        insereAtualizacao(atualizacoes, origem, destino, instante, velocidadeMedia);
+    }
 
     free(buffer);
     return grafo;
