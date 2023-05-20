@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "file.h"
-#include "grafo.h"
 #include "atualizacao.h"
+#include "listaAdjacencia.h"
 
 int main(int argc, char *argv[]) {
 
@@ -11,26 +11,25 @@ int main(int argc, char *argv[]) {
     // Abre o arquivo de entrada
     FILE* arquivoEntrada = abreArquivoEntrada(argv[1]);
 
-    int m, n;
+    int nVertices,mArestas;
     int vOrigem, vDestino;
 
     Atualizacoes* atualizacoes = initAtualizacoes();
 
-    // Inicializa um vetor de arestas para representar o grafo
-    Aresta** grafo = initGrafo(arquivoEntrada, &n, &m, &vOrigem, &vDestino, atualizacoes);
+    // Inicializa um grafo usando lista de adjacencia
+    Grafo* grafo = initGrafo(arquivoEntrada, &nVertices, &mArestas, &vOrigem, &vDestino, atualizacoes);
 
-    // Imprimindo o grafo para teste (deve ser removido)
-    for (int i = 0; i < m; i++) {
-        printf("%d %d %d %f\n", getOrigem(grafo[i]), getDestino(grafo[i]), getDistancia(grafo[i]), getTempo(grafo[i]));
-    }
+    // TODO: 
+    // - Utilizar a priority queue com a lista de adjacencia
+    // - Implementar o algoritmo de Dijkstra
+    // - Antes de cada iteracao do algoritmo, verificar se ha atualizacoes nas rotas
+    // - Criar uma funcao para atualizar as rotas no grafo
 
-    // Imprimindo as atualizacoes para teste (deve ser removido)
-    for (int i = 0; i < getNAtual(atualizacoes); i++) {
-        printf("%d\n",getInstanteAtualizacao(atualizacoes, i));
-    }
+    // funcao para imprimir o grafo (deve ser removida)
+    imprimeGrafo(grafo);
 
     fechaArquivo(arquivoEntrada);
-    liberaGrafo(grafo, m);
+    liberaGrafo(grafo);
     liberaAtualizacoes(atualizacoes);
 
     return 0;
