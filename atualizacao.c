@@ -30,7 +30,7 @@ Atualizacoes* initAtualizacoes() {
         exit(-1);
     }
     // Atribui os valores iniciais
-    atualizacoes->ultimaAtualizacao = -1;
+    atualizacoes->ultimaAtualizacao = 0;
     atualizacoes->nAtual = 0;
     atualizacoes->nMax = 10; // Valor inicial maximo definido como 10
 
@@ -133,8 +133,8 @@ int getUltimaAtualizacao(Atualizacoes* atualizacoes) {
 // Funcao que altera qual foi a ultima atualizacao realizada do vetor
 // Entrada: vetor de atualizacoes e ultima atualizacao realizada
 // Saida: void
-void setUltimaAtualizacao(Atualizacoes* atualizacoes, int ultimaAtualizacao) {
-    atualizacoes->ultimaAtualizacao = ultimaAtualizacao;
+void setUltimaAtualizacao(Atualizacoes** atualizacoes, int ultimaAtualizacao) {
+    (*atualizacoes)->ultimaAtualizacao = ultimaAtualizacao;
 }
 
 // Funcao que retorna o numero de atualizacoes do vetor

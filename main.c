@@ -2,7 +2,8 @@
 #include "file.h"
 #include "atualizacao.h"
 #include "listaAdjacencia.h"
-
+#include "PQ.h"
+#include "djikstra.h"
 int main(int argc, char *argv[]) {
 
     // Verifica se os argumentos estao corretos
@@ -19,15 +20,16 @@ int main(int argc, char *argv[]) {
     // Inicializa um grafo usando lista de adjacencia
     Grafo* grafo = initGrafo(arquivoEntrada, &nVertices, &mArestas, &vOrigem, &vDestino, atualizacoes);
 
-    // TODO: 
-    // - Utilizar a priority queue com a lista de adjacencia
-    // - Implementar o algoritmo de Dijkstra
-    // - Antes de cada iteracao do algoritmo, verificar se ha atualizacoes nas rotas
-    // - Criar uma funcao para atualizar as rotas no grafo
+    Item* pq;
+    int* map;
+    PQ_init(&pq,&map,nVertices);
+
+    djikstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
 
     // funcao para imprimir o grafo (deve ser removida)
-    imprimeGrafo(grafo);
+    //imprimeGrafo(grafo);
 
+    PQ_finish(pq,map);
     fechaArquivo(arquivoEntrada);
     liberaGrafo(grafo);
     liberaAtualizacoes(atualizacoes);

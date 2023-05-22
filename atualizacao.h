@@ -23,7 +23,7 @@ Atualizacao** getVetorAtualizacao(Atualizacoes* atualizacoes);
 
 int getUltimaAtualizacao(Atualizacoes* atualizacoes);
 
-void setUltimaAtualizacao(Atualizacoes* atualizacoes, int ultimaAtualizacao);
+void setUltimaAtualizacao(Atualizacoes** atualizacoes, int ultimaAtualizacao);
 
 int getNAtual(Atualizacoes* atualizacoes);
 

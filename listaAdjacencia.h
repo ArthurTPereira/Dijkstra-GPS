@@ -21,6 +21,8 @@ Grafo* initGrafo(FILE* arquivoEntrada, int* nVertices, int* mArestas, int* vOrig
 
 void liberaGrafo(Grafo* grafo);
 
-void atualizaGrafo(Grafo* grafo, int origem, int destino, float novaVelocidade);
+void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade);
+
+int getVertices(Grafo* grafo);
 
 #endif

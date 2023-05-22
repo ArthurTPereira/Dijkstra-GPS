@@ -169,9 +169,9 @@ Grafo* initGrafo(FILE* arquivoEntrada, int* nArestas, int* mArestas, int* vOrige
 // Funcao que insere uma atualizacao no grafo
 // Entrada: grafo, vertice origem, vertice destino e nova velocidade da aresta
 // Saida: void
-void atualizaGrafo(Grafo* grafo, int origem, int destino, float novaVelocidade) {
+void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade) {
     // Obtem o inicio da lista para o vertice origem
-    Node* p = grafo->vetor[origem]->inicio;
+    Node* p = (*grafo)->vetor[origem]->inicio;
 
     // Enquanto nao chegar no fim da lista, busca o vertice destino
     while (p != NULL) {
@@ -183,4 +183,11 @@ void atualizaGrafo(Grafo* grafo, int origem, int destino, float novaVelocidade) 
         }
         p = p->prox;
     }
+}
+
+// Funcao que retorna os vertices do grafo
+// Entrada: grafo
+// Saida: numero de vertices
+int getVertices(Grafo* grafo) {
+    return grafo->vertices;
 }
