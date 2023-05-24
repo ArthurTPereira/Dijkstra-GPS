@@ -14,8 +14,13 @@ Item make_item(int id, double value) {
     return t;
 }
 
-void djikstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map) {
+int* djikstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map) {
     
+    // TODO: Vetor timeTo e vetor edgeTo
+    // Retorno: vetor edgeTo -> Podemos obter o menor caminho
+    // Temos que retornar o tempo e a distancia de alguma forma
+    int* edgeTo;
+
     // Insere o vertice de origem na priority queue
     PQ_insert(pq,map,make_item(vOrigem, 0));
     
@@ -31,18 +36,23 @@ void djikstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
     int atualizacaoAtual = 0;
 
     // Enquanto a priority queue nao estiver vazia
-    while (!PQ_empty(pq)) {
-        // Obtem qual a atualizacao que deve ser feita e o instante
-        atualizacaoAtual = getUltimaAtualizacao(*atualizacoes);
-        instanteAtualizacao = getInstanteAtualizacao(*atualizacoes,atualizacaoAtual);
+    while (!PQ_empty(pq)) {        
+        // Verifica se ainda existem atualizacoes
+        if (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes)) {
+            // Obtem a atualizacao atual e o instante que ela ocorre
+            atualizacaoAtual = getUltimaAtualizacao(*atualizacoes);
+            instanteAtualizacao = getInstanteAtualizacao(*atualizacoes,atualizacaoAtual);
 
-        // Verifica se o tempo decorrido alcançou o instante de atualizacao
-        if (tempoDecorrido > instanteAtualizacao) {
-            // Atualiza o grafo com as novas atualizacoes
-            atualizaGrafo(grafo,getOrigemAtualizacao(*atualizacoes,atualizacaoAtual),getDestinoAtualizacao(*atualizacoes,atualizacaoAtual),getVelocidadeAtualizacao(*atualizacoes,atualizacaoAtual));
-            setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
-            tempoDecorrido += instanteAtualizacao;
+            // Verifica se o tempo decorrido total alcançou o instante de atualizacao
+            if (tempoDecorrido >= instanteAtualizacao) {
+                // Atualiza o grafo com as novas atualizacoes
+                atualizaGrafo(grafo,getOrigemAtualizacao(*atualizacoes,atualizacaoAtual),getDestinoAtualizacao(*atualizacoes,atualizacaoAtual),getVelocidadeAtualizacao(*atualizacoes,atualizacaoAtual));
+                
+                // Atualiza para a proxima atualizacao
+                setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
+            }
         }
+
         
         // Remove o elemento com menor prioridade
         Item p = PQ_delmin(pq,map);
@@ -50,5 +60,7 @@ void djikstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
         // continuar o algoritmo
 
     }
+
+    return edgeTo;
 }
 

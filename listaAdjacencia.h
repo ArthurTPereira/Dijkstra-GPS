@@ -25,4 +25,14 @@ void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade)
 
 int getVertices(Grafo* grafo);
 
+Node* getListaAdjacencia(Grafo* grafo, int vertice);
+
+Node* getProx(Node* node);
+
+int getDestino(Node* node);
+
+float getDistancia(Node* node);
+
+float getTempo(Node* node);
+
 #endif

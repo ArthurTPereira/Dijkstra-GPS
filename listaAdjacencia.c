@@ -191,3 +191,37 @@ void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade)
 int getVertices(Grafo* grafo) {
     return grafo->vertices;
 }
+
+// Funcao que retorna a lista de adjacencia de um vertice
+// Entrada: grafo, vertice
+// Saida: lista de adjacencia
+Node* getListaAdjacencia(Grafo* grafo, int vertice) {
+    return grafo->vetor[vertice]->inicio;
+}
+
+// Funcao que retorna o proximo no da lista de adjacencia
+// Entrada: no
+// Saida: proximo no
+Node* getProx(Node* node) {
+    return node->prox;
+}
+// Funcao que retorna o vertice destino
+// Entrada: no
+// Saida: vertice destino
+int getDestino(Node* node) {
+    return node->destino;
+}
+
+// Funcao que retorna a distancia
+// Entrada: no
+// Saida: distancia
+float getDistancia(Node* node) {
+    return node->distancia;
+}
+
+// Funcao que retorna o tempo de percurso
+// Entrada: no
+// Saida: tempo de percurso
+float getTempo(Node* node) {
+    return node->tempo;
+}
