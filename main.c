@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     int* map;
     PQ_init(&pq,&map,nVertices);
 
-    djikstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
+    dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
 
     // funcao para imprimir o grafo (deve ser removida)
     //imprimeGrafo(grafo);
