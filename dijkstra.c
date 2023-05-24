@@ -4,7 +4,7 @@
 
 #include "listaAdjacencia.h"
 #include "atualizacao.h"
-#include "djikstra.h"
+#include "dijkstra.h"
 #include "PQ.h"
 
 Item make_item(int id, double value) {
@@ -14,7 +14,7 @@ Item make_item(int id, double value) {
     return t;
 }
 
-int* djikstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map) {
+int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map) {
     
     // TODO: Vetor timeTo e vetor edgeTo
     // Retorno: vetor edgeTo -> Podemos obter o menor caminho
