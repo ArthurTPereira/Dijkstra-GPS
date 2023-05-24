@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "file.h"
 #include "atualizacao.h"
 #include "listaAdjacencia.h"
@@ -24,8 +25,9 @@ int main(int argc, char *argv[]) {
     int* map;
     PQ_init(&pq,&map,nVertices);
 
-    dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
+    int* edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
 
+    free(edgeTo);
     // funcao para imprimir o grafo (deve ser removida)
     //imprimeGrafo(grafo);
 
@@ -33,6 +35,5 @@ int main(int argc, char *argv[]) {
     fechaArquivo(arquivoEntrada);
     liberaGrafo(grafo);
     liberaAtualizacoes(atualizacoes);
-
     return 0;
 }

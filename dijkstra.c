@@ -19,17 +19,18 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
     // TODO: Vetor timeTo e vetor edgeTo
     // Retorno: vetor edgeTo -> Podemos obter o menor caminho
     // Temos que retornar o tempo e a distancia de alguma forma
-    int* edgeTo;
+    int* edgeTo = (int*) malloc(getVertices(*(grafo)) * sizeof(int));
+    float* timeTo = (float*) malloc(getVertices(*(grafo)) * sizeof(float));
 
     // Insere o vertice de origem na priority queue
     PQ_insert(pq,map,make_item(vOrigem, 0));
     
     // Insere os demais vertices na priority queue
     for (int i = 1; i < getVertices(*(grafo)); i++) {
-        if (i != vOrigem) {
-            PQ_insert(pq,map,make_item(i, INT_MAX)); // INT_MAX representa infinito
-        }
+        timeTo[i] = INT_MAX;
     }
+
+    timeTo[vOrigem] = 0;
 
     float tempoDecorrido = 0;
     int instanteAtualizacao = 0;
@@ -53,9 +54,12 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
         
         // Remove o elemento com menor prioridade
         Item p = PQ_delmin(pq,map);
-        // continuar o algoritmo
+        
+        
     
     }
+
+    free(timeTo);
 
     return edgeTo;
 }

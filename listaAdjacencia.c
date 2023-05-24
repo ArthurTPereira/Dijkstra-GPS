@@ -6,11 +6,11 @@
 
 // Struct com um no da lista de adjacencia
 struct node {
+    int origem;
     int destino;
     float distancia;
     float velocidade;
     float tempo;
-    int visitado;
     Node* prox;
 };
 
@@ -28,18 +28,18 @@ struct grafo {
 // Funcao que cria um no da lista de adjacencia
 // Entrada: vertice destino, distancia e velocidade
 // Saida: no da lista de adjacencia
-Node* criaNode(int destino, float distancia, float velocidade) {
+Node* criaNode(int origem, int destino, float distancia, float velocidade) {
     // Aloca um no
     Node* node = (Node*) malloc(sizeof(Node));
     
     // Atribui os valores
+    node->origem = origem;
     node->destino = destino;
     node->distancia = distancia;
     node->velocidade = velocidade;
 
     // Converte para m/s e calcula o tempo em segundos
     node->tempo = distancia / (velocidade / 3.6);
-    node->visitado = 0; // util depois para a fila de prioridade
     node->prox = NULL;
     return node;
 }
@@ -69,7 +69,7 @@ Grafo* criaGrafo(int vertices) {
 // Saida: void
 void insereAresta(Grafo* grafo, int origem, int destino, float distancia, float velocidade) {
     // Cria um no para o vertice destino
-    Node* node = criaNode(destino, distancia, velocidade);
+    Node* node = criaNode(origem, destino, distancia, velocidade);
     
     // Atribui o proximo no como o inicio da lista de adjacencia
     node->prox = grafo->vetor[origem]->inicio;

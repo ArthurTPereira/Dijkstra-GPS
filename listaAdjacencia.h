@@ -9,7 +9,7 @@ typedef struct listaAdjacencia ListaAdjacencia;
 
 typedef struct grafo Grafo;
 
-Node* criaNode(int destino, float distancia, float velocidade);
+Node* criaNode(int origem, int destino, float distancia, float velocidade);
 
 Grafo* criaGrafo(int vertices);
 
