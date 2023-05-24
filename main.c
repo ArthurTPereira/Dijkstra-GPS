@@ -3,7 +3,7 @@
 #include "atualizacao.h"
 #include "listaAdjacencia.h"
 #include "PQ.h"
-#include "djikstra.h"
+#include "dijkstra.h"
 int main(int argc, char *argv[]) {
 
     // Verifica se os argumentos estao corretos
