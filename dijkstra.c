@@ -37,28 +37,24 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
 
     // Enquanto a priority queue nao estiver vazia
     while (!PQ_empty(pq)) {        
-        // Verifica se ainda existem atualizacoes
-        if (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes)) {
+        // Verifica se ha atualizacoes no vetor e varre as atualizacoes que ocorrem apos o tempo decorrido atual
+        while (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes) && tempoDecorrido >= getInstanteAtualizacao(*atualizacoes,getUltimaAtualizacao(*atualizacoes))) {
             // Obtem a atualizacao atual e o instante que ela ocorre
             atualizacaoAtual = getUltimaAtualizacao(*atualizacoes);
             instanteAtualizacao = getInstanteAtualizacao(*atualizacoes,atualizacaoAtual);
 
-            // Verifica se o tempo decorrido total alcançou o instante de atualizacao
-            if (tempoDecorrido >= instanteAtualizacao) {
-                // Atualiza o grafo com as novas atualizacoes
-                atualizaGrafo(grafo,getOrigemAtualizacao(*atualizacoes,atualizacaoAtual),getDestinoAtualizacao(*atualizacoes,atualizacaoAtual),getVelocidadeAtualizacao(*atualizacoes,atualizacaoAtual));
+            // Atualiza o grafo com as novas atualizacoes
+            atualizaGrafo(grafo,getOrigemAtualizacao(*atualizacoes,atualizacaoAtual),getDestinoAtualizacao(*atualizacoes,atualizacaoAtual),getVelocidadeAtualizacao(*atualizacoes,atualizacaoAtual));
                 
-                // Atualiza para a proxima atualizacao
-                setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
-            }
+            // Atualiza para a proxima atualizacao
+            setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
         }
 
         
         // Remove o elemento com menor prioridade
         Item p = PQ_delmin(pq,map);
-        printf("Identificador %d, prioridade %lf\n", id(p), value(p));
         // continuar o algoritmo
-
+    
     }
 
     return edgeTo;
