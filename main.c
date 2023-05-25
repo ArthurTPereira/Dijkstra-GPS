@@ -5,6 +5,7 @@
 #include "listaAdjacencia.h"
 #include "PQ.h"
 #include "dijkstra.h"
+
 int main(int argc, char *argv[]) {
 
     // Verifica se os argumentos estao corretos
@@ -25,8 +26,13 @@ int main(int argc, char *argv[]) {
     int* map;
     PQ_init(&pq,&map,nVertices);
 
-    int* edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map);
+    float distanciaPercorrida = 0;
+    float tempoPercorrido = 0;
+    Node** edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map, &tempoPercorrido, &distanciaPercorrida);
 
+    printf("\nDistancia percorrida: %.2f\n", distanciaPercorrida);
+    printf("Tempo decorrido: %.2f\n", tempoPercorrido);
+    
     free(edgeTo);
     // funcao para imprimir o grafo (deve ser removida)
     //imprimeGrafo(grafo);

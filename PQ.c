@@ -73,4 +73,13 @@ void PQ_finish(Item* pq, int* map) {
     free(map);
 }
 
+bool PQ_contains(Item* pq, int vertice) {
+    for (int i = 1; i <= pq->N; i++) {
+        if (id(pq[i]) == vertice) {
+            return true;
+        }
+    }
+    return false;
+}
+
 

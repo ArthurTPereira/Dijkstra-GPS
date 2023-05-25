@@ -35,4 +35,6 @@ float getDistancia(Node* node);
 
 float getTempo(Node* node);
 
+int getOrigem(Node* node);
+
 #endif

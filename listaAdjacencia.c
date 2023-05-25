@@ -225,3 +225,10 @@ float getDistancia(Node* node) {
 float getTempo(Node* node) {
     return node->tempo;
 }
+
+// Funcao que retorna a origem
+// Entrada: no
+// Saida: origem
+int getOrigem(Node* node) {
+    return node->origem;
+}

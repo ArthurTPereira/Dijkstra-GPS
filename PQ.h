@@ -12,5 +12,5 @@ Item PQ_min(Item* pq);          // Retorna Item com menor campo 'value' da PQ
 bool PQ_empty(Item* pq);        // Retorna True se a PQ não tem elementos
 int  PQ_size(Item* pq);         // Número de elementos na PQ
 void PQ_finish(Item* pq, int* map);       // Libera memória
-
+bool PQ_contains(Item* pq, int vertice); // Verifica se a PQ contem o vertice
 #endif
