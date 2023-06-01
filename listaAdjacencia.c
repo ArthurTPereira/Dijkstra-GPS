@@ -78,20 +78,6 @@ void insereAresta(Grafo* grafo, int origem, int destino, float distancia, float 
     grafo->vetor[origem]->inicio = node;
 }
 
-// Funcao temporaria para imprimir o grafo
-void imprimeGrafo(Grafo* grafo) {
-    int v;
-    for (v = 1; v < grafo->vertices; v++) {
-        Node* p = grafo->vetor[v]->inicio;
-        printf("\n Lista de adjacências do vértice %d\n head ", v);
-        while (p) {
-            printf("-> %d (Peso: %f) (Tempo: %f)", p->destino, p->distancia, p->tempo);
-            p = p->prox;
-        }
-        printf("\n");
-    }   
-}
-
 // Funcao que libera o grafo
 // Entrada: grafo
 // Saida: void

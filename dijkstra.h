@@ -3,6 +3,6 @@
 
 #include "item.h"
 
-Node** dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map, float* tempoDecorrido, float* distanciaPercorrida);
+int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map, double* tempoDecorrido, double* distanciaPercorrida);
 
 #endif

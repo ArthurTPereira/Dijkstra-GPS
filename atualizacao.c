@@ -8,7 +8,7 @@ struct atualizacao {
     int origem;
     int destino;
     int instante;
-    float velocidade;
+    double velocidade;
 };
 
 // Struct com o vetor de atualizacoes
@@ -65,7 +65,7 @@ void liberaAtualizacoes(Atualizacoes* atualizacoes) {
 // Funcao que insere uma atualizacao no vetor de atualizacoes
 // Entrada: vetor de atualizacoes, origem, destino, instante e velocidade
 // Saida: void
-void insereAtualizacao(Atualizacoes* atualizacoes, int origem, int destino, int instante, float velocidade) {
+void insereAtualizacao(Atualizacoes* atualizacoes, int origem, int destino, int instante, double velocidade) {
     // Se o vetor estiver cheio, dobra o tamanho e realoca
     if (atualizacoes->nAtual == atualizacoes->nMax) {
         atualizacoes->nMax *= 2;
@@ -112,7 +112,7 @@ int getInstanteAtualizacao(Atualizacoes* atualizacoes, int i) {
 // Funcao que retorna a velocidade de uma atualizacao
 // Entrada: vetor de atualizacoes e indice da atualizacao
 // Saida: velocidade da atualizacao
-float getVelocidadeAtualizacao(Atualizacoes* atualizacoes, int i) {
+double getVelocidadeAtualizacao(Atualizacoes* atualizacoes, int i) {
     return atualizacoes->vetor[i]->velocidade;
 }
 

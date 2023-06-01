@@ -15,8 +15,6 @@ Grafo* criaGrafo(int vertices);
 
 void insereAresta(Grafo* grafo, int origem, int destino, float distancia, float velocidade);
 
-void imprimeGrafo(Grafo* grafo);
-
 Grafo* initGrafo(FILE* arquivoEntrada, int* nVertices, int* mArestas, int* vOrigem, int* vDestino, Atualizacoes* atualizacoes);
 
 void liberaGrafo(Grafo* grafo);

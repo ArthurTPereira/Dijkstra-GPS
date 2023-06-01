@@ -53,3 +53,50 @@ FILE* abreArquivoSaida(char* nomeArquivoSaida) {
 void fechaArquivo(FILE* arquivo) {
     fclose(arquivo);
 }
+
+// Imprime o menor caminho
+// Entrada: vetor - vetor de vertices
+//          vOrigem - vertice de origem
+//          vDestino - vertice de destino
+//          fp - ponteiro para o arquivo de saida
+// Saida:   void
+void imprimeCaminho(FILE* fp, int* vetor, int vOrigem, int vDestino) {
+    if (vetor[vDestino] == 0) {
+        fprintf(fp,"%d;", vOrigem);
+        return;
+    }
+    
+    imprimeCaminho(fp, vetor, vOrigem, vetor[vDestino]);
+
+    static int primeiro = 1;
+
+    if (primeiro) {
+        fprintf(fp,"%d", vDestino);
+        primeiro = 0;
+    } else {
+        fprintf(fp,";%d", vDestino);
+    }
+}
+
+void imprimeTempo(FILE* fp, double tempoPercorrido){
+    int horas = 0;
+    int minutos;
+    double segundos;
+    
+    horas = tempoPercorrido / 3600;
+    minutos = (tempoPercorrido - (3600 * horas)) / 60;
+    segundos = tempoPercorrido - ((3600 * horas) + (minutos * 60));
+
+    fprintf(fp,"%02d:%02d:%lf", horas, minutos, segundos);
+}
+
+void imprimeDistancia(FILE* fp, double distanciaPercorrida){
+    fprintf(fp, "%lf\n", distanciaPercorrida / 1000);
+}
+
+void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double tempoDecorrido, double distanciaPercorrida) {
+    imprimeCaminho(fp, vetor, vOrigem, vDestino);
+    fprintf(fp,"\n");
+    imprimeDistancia(fp, distanciaPercorrida);
+    imprimeTempo(fp, tempoDecorrido);
+}
