@@ -61,15 +61,20 @@ void fechaArquivo(FILE* arquivo) {
 //          fp - ponteiro para o arquivo de saida
 // Saida:   void
 void imprimeCaminho(FILE* fp, int* vetor, int vOrigem, int vDestino) {
+
+    // Caso o vertice de destino seja igual ao vertice de origem
     if (vetor[vDestino] == 0) {
         fprintf(fp,"%d;", vOrigem);
         return;
     }
     
+    // Chamada recursiva para imprimir o menor caminho
     imprimeCaminho(fp, vetor, vOrigem, vetor[vDestino]);
 
+    // Verificador estatico para nao imprimir o ponto e virgula no ultimo vertice do caminho
     static int primeiro = 1;
 
+    // Imprime o vertice
     if (primeiro) {
         fprintf(fp,"%d", vDestino);
         primeiro = 0;
@@ -78,25 +83,56 @@ void imprimeCaminho(FILE* fp, int* vetor, int vOrigem, int vDestino) {
     }
 }
 
-void imprimeTempo(FILE* fp, double tempoPercorrido){
-    int horas = 0;
+// Funcao que imprime o tempo decorrido final
+// Entrada: fp - ponteiro para o arquivo de saida
+//          tempoPercorrido - tempo decorrido
+// Saida:   void
+void imprimeTempo(FILE* fp, double tempoPercorrido) {
+
+    // Variaveis do tempo
+    int horas;
     int minutos;
     double segundos;
     
+    // Calcula as horas
     horas = tempoPercorrido / 3600;
+    
+    // Calcula os minutos pela diferenca entre o tempo decorrido e as horas
     minutos = (tempoPercorrido - (3600 * horas)) / 60;
+
+    // Calcula os segundos pela diferenca entre o tempo decorrido e as horas e minutos
     segundos = tempoPercorrido - ((3600 * horas) + (minutos * 60));
 
-    fprintf(fp,"%02d:%02d:%lf", horas, minutos, segundos);
+    // Imprime no arquivo no formato especificado
+    fprintf(fp,"%02d:%02d:%0.15lf", horas, minutos, segundos);
 }
 
+// Funcao para imprimir a distancia percorrida final
+// Entrada: fp - ponteiro para o arquivo de saida
+//          distanciaPercorrida - distancia percorrida
+// Saida:   void
 void imprimeDistancia(FILE* fp, double distanciaPercorrida){
-    fprintf(fp, "%lf\n", distanciaPercorrida / 1000);
+    
+    // Conversao para km antes de imprimir
+    fprintf(fp, "%.15lf\n", distanciaPercorrida / 1000);
 }
 
+// Funcao para imprimir o arquivo de saida completo
+// Entrada: fp - ponteiro para o arquivo de saida
+//          vetor - vetor de vertices
+//          vOrigem - vertice de origem
+//          vDestino - vertice de destino
+//          tempoDecorrido - tempo decorrido
+//          distanciaPercorrida - distancia percorrida
+// Saida:   void
 void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double tempoDecorrido, double distanciaPercorrida) {
+    // Imprime o menor caminho
     imprimeCaminho(fp, vetor, vOrigem, vDestino);
+    
+    // Quebra de linha
     fprintf(fp,"\n");
+
+    // Imprime a distancia e o tempo decorrido
     imprimeDistancia(fp, distanciaPercorrida);
     imprimeTempo(fp, tempoDecorrido);
 }

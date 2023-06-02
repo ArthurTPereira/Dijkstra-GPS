@@ -7,6 +7,10 @@
 #include "dijkstra.h"
 #include "PQ.h"
 
+// Funcao para criar um Item
+// Entrada:     id - Identificador do vertice
+//              value - Peso do vertice (Tempo)
+// Saida:       Item - Item criado
 Item make_item(int id, double value) {
     Item t;
     id(t) = id;
@@ -14,8 +18,19 @@ Item make_item(int id, double value) {
     return t;
 }
 
+// Algoritmo de Dijkstra
+// Entrada:     Grafo - Grafo com as informacoes das arestas
+//              vOrigem - Vertice de origem
+//              vDestino - Vertice de destino
+//              atualizacoes - Vetor com as atualizacoes
+//              pq - Fila de prioridade
+//              map - Vetor de mapeamento
+//              tempoDecorrido - Tempo decorrido
+//              distanciaPercorrida - Distancia percorrida
+// Saida:       edgeTo - Vetor com os vertices antecessores
 int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map, double* tempoDecorrido, double* distanciaPercorrida) {
     
+    // Inicializa os vetores de tempo, distancia e adjacentes
     int* edgeTo = (int*) calloc(getVertices(*(grafo)), sizeof(int));
     double* timeTo = (double*) malloc(getVertices(*(grafo)) * sizeof(double));
     double* distTo = (double*) malloc(getVertices(*(grafo)) * sizeof(double));
@@ -29,6 +44,7 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
         distTo[i] = __FLT_MAX__;
     }
 
+    // Inicializa o vertice de origem do vetor de tempo e distancia com 0
     timeTo[vOrigem] = 0;
     distTo[vOrigem] = 0;
 
@@ -43,7 +59,9 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
         int vertice = id(p);
         double value = value(p);
 
+        // Coleta o tempo total decorrido
         tempoTotal = timeTo[vertice];
+
         // Verifica se ha atualizacoes no vetor e varre as atualizacoes que ocorrem apos o tempo decorrido atual
             while (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes) && (tempoTotal) >= getInstanteAtualizacao(*atualizacoes,getUltimaAtualizacao(*atualizacoes))) {
             // Obtem a atualizacao atual e o instante que ela ocorre
@@ -57,30 +75,42 @@ int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizac
             setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
         }
 
+        // Para cada vertice adjacente ao vertice removido
         for (Node* adj = getListaAdjacencia((*grafo),vertice); adj != NULL; adj = getProx(adj)) {
+            // Obtem o vertice origem, destino, tempo e distancia
             int v = getOrigem(adj);
             int w = getDestino(adj);
             double tempo = getTempo(adj);
             double distancia = getDistancia(adj);
             
-
+            // Atualiza a fila de prioridades caso o tempo para o vertice destino seja menor que o tempo atual
             if (timeTo[w] > timeTo[v] + tempo) {
                 timeTo[w] = timeTo[v] + tempo;
                 distTo[w] = distTo[v] + distancia;
                 edgeTo[w] = v;
                 
+                // Verifica se o vertice destino ja esta na priority queue
                 if (PQ_contains(pq,w)) {
+
+                    // Atualiza a prioridade do item
                     PQ_decrease_key(pq,map,w,timeTo[w]);
                 } else {
+
+                    // Insere na priority queue
                     PQ_insert(pq,map,make_item(w,timeTo[w]));
                 }
             }
         }
     }
+
+    // Atribui o tempo decorrido final e a distancia as variaveis de saida
     *tempoDecorrido = timeTo[vDestino];
     *distanciaPercorrida = distTo[vDestino];
+
+    // Libera os vetores auxiliares de tempo e distancia
     free(timeTo);
     free(distTo);
-    imprimeCaminho(edgeTo, vOrigem, vDestino);
+
+    // Retorna o vetor com o menor caminho
     return edgeTo;
 }
