@@ -9,7 +9,6 @@ struct node {
     int origem;
     int destino;
     float distancia;
-    float velocidade;
     float tempo;
     Node* prox;
 };
@@ -36,7 +35,6 @@ Node* criaNode(int origem, int destino, float distancia, float velocidade) {
     node->origem = origem;
     node->destino = destino;
     node->distancia = distancia;
-    node->velocidade = velocidade;
 
     // Converte para m/s e calcula o tempo em segundos
     node->tempo = distancia / (velocidade / 3.6);
@@ -164,7 +162,6 @@ void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade)
         if (p->destino == destino) {
 
             // Atrubui nova velocidade e calcula o novo tempo
-            p->velocidade = novaVelocidade;
             p->tempo = p->distancia / (novaVelocidade / 3.6);
         }
         p = p->prox;
