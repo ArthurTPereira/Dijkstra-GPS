@@ -8,8 +8,8 @@
 struct node {
     int origem;
     int destino;
-    float distancia;
-    float tempo;
+    double distancia;
+    double tempo;
     Node* prox;
 };
 
@@ -27,7 +27,7 @@ struct grafo {
 // Funcao que cria um no da lista de adjacencia
 // Entrada: vertice destino, distancia e velocidade
 // Saida: no da lista de adjacencia
-Node* criaNode(int origem, int destino, float distancia, float velocidade) {
+Node* criaNode(int origem, int destino, double distancia, double velocidade) {
     // Aloca um no
     Node* node = (Node*) malloc(sizeof(Node));
     
@@ -65,7 +65,7 @@ Grafo* criaGrafo(int vertices) {
 // Funcao que insere uma aresta no inicio da lista de adjacencia
 // Entrada: grafo, vertice origem, vertice destino, distancia e velocidade
 // Saida: void
-void insereAresta(Grafo* grafo, int origem, int destino, float distancia, float velocidade) {
+void insereAresta(Grafo* grafo, int origem, int destino, double distancia, double velocidade) {
     // Cria um no para o vertice destino
     Node* node = criaNode(origem, destino, distancia, velocidade);
     
@@ -121,18 +121,18 @@ Grafo* initGrafo(FILE* arquivoEntrada, int* nArestas, int* mArestas, int* vOrige
     getline(&buffer, &bufferSize, arquivoEntrada);
 
     // Obtem a velocidade media
-    float velocidadeMedia;
-    sscanf(buffer, "%f", &velocidadeMedia);
+    double velocidadeMedia;
+    sscanf(buffer, "%lf", &velocidadeMedia);
 
     // Preenche o grafo
     int i = 0;
     int origem, destino;
-    float distancia;
+    double distancia;
 
     // Enquanto houver arestas, insere no grafo
     while (i < (*mArestas)) {
         getline(&buffer, &bufferSize, arquivoEntrada);
-        sscanf(buffer, "%d;%d;%f", &origem, &destino, &distancia);
+        sscanf(buffer, "%d;%d;%lf", &origem, &destino, &distancia);
         insereAresta(grafo, origem, destino, distancia, velocidadeMedia);
         i++;
     }
@@ -141,7 +141,7 @@ Grafo* initGrafo(FILE* arquivoEntrada, int* nArestas, int* mArestas, int* vOrige
     // Preenche as atualizacoes
     // Enquanto houver atualizacoes ate o fim do arquivo, insere no vetor de atualizacoes
     while (getline(&buffer, &bufferSize, arquivoEntrada) != -1) {
-        sscanf(buffer, "%d;%d;%d;%f", &instante, &origem, &destino, &velocidadeMedia);
+        sscanf(buffer, "%d;%d;%d;%lf", &instante, &origem, &destino, &velocidadeMedia);
         insereAtualizacao(atualizacoes, origem, destino, instante, velocidadeMedia);
     }
 
@@ -153,7 +153,7 @@ Grafo* initGrafo(FILE* arquivoEntrada, int* nArestas, int* mArestas, int* vOrige
 // Funcao que insere uma atualizacao no grafo
 // Entrada: grafo, vertice origem, vertice destino e nova velocidade da aresta
 // Saida: void
-void atualizaGrafo(Grafo** grafo, int origem, int destino, float novaVelocidade) {
+void atualizaGrafo(Grafo** grafo, int origem, int destino, double novaVelocidade) {
     // Obtem o inicio da lista para o vertice origem
     Node* p = (*grafo)->vetor[origem]->inicio;
 
@@ -198,14 +198,14 @@ int getDestino(Node* node) {
 // Funcao que retorna a distancia
 // Entrada: no
 // Saida: distancia
-float getDistancia(Node* node) {
+double getDistancia(Node* node) {
     return node->distancia;
 }
 
 // Funcao que retorna o tempo de percurso
 // Entrada: no
 // Saida: tempo de percurso
-float getTempo(Node* node) {
+double getTempo(Node* node) {
     return node->tempo;
 }
 
