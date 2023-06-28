@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
     double tempoPercorrido = 0;
 
     // Executa o algoritmo de Dijkstra
-    //int* edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map, &tempoPercorrido, &distanciaPercorrida);
     int* edgeTo = DijkstraLoop(&grafo,vOrigem,vDestino, &atualizacoes, &tempoPercorrido, &distanciaPercorrida);
+    
     // Abre o arquivo de saida
     FILE* arquivoSaida = abreArquivoSaida(argv[2]);
 
@@ -41,10 +41,7 @@ int main(int argc, char *argv[]) {
     imprimeArquivo(arquivoSaida, edgeTo, vOrigem, vDestino, tempoPercorrido, distanciaPercorrida);
     
     // Libera o vetor de vertices
-    free(edgeTo);
-
-    // Libera a priority queue e o vetor de mapeamento
-    
+    free(edgeTo);    
 
     // Fecha o arquivo de saida
     fechaArquivo(arquivoSaida);

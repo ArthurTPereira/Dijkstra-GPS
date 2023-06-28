@@ -95,12 +95,11 @@ void imprimeTempo(FILE* fp, double tempoPercorrido) {
     // Calcula os segundos pela diferenca entre o tempo decorrido e as horas e minutos
     segundos = tempoPercorrido - ((3600 * horas) + (minutos * 60));
 
+    // Imprime no arquivo no formato especificado
     if (segundos < 10) {
         fprintf(fp,"%02d:%02d:0%.15lf", horas, minutos, segundos);
     } else {
-    // Imprime no arquivo no formato especificado
         fprintf(fp,"%02d:%02d:%.15lf", horas, minutos, segundos);
-
     }
 }
 
@@ -132,6 +131,7 @@ void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double temp
     // Imprime a distancia e o tempo decorrido
     imprimeDistancia(fp, distanciaPercorrida);
     imprimeTempo(fp, tempoDecorrido);
+    fprintf(fp,"\n");
 }
 
 

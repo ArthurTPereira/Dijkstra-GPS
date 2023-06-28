@@ -18,105 +18,7 @@ Item make_item(int id, double value) {
     return t;
 }
 
-// Algoritmo de Dijkstra
-// Entrada:     Grafo - Grafo com as informacoes das arestas
-//              vOrigem - Vertice de origem
-//              vDestino - Vertice de destino
-//              atualizacoes - Vetor com as atualizacoes
-//              pq - Fila de prioridade
-//              map - Vetor de mapeamento
-//              tempoDecorrido - Tempo decorrido
-//              distanciaPercorrida - Distancia percorrida
-// Saida:       edgeTo - Vetor com os vertices antecessores
-int* dijkstra(Grafo** grafo, int vOrigem, int vDestino, Atualizacoes** atualizacoes, Item* pq, int* map, double* tempoDecorrido, double* distanciaPercorrida) {
-    
-    // Inicializa os vetores de tempo, distancia e adjacentes
-    int* edgeTo = (int*) calloc(getVertices(*(grafo)), sizeof(int));
-    double* timeTo = (double*) malloc(getVertices(*(grafo)) * sizeof(double));
-    double* distTo = (double*) malloc(getVertices(*(grafo)) * sizeof(double));
-
-    // Insere o vertice de origem na priority queue
-    PQ_insert(pq,map,make_item(vOrigem, 0));
-    
-    // Insere os demais vertices na priority queue
-    for (int i = 1; i < getVertices(*(grafo)); i++) {
-        timeTo[i] = __FLT_MAX__;
-        distTo[i] = __FLT_MAX__;
-    }
-
-    // Inicializa o vertice de origem do vetor de tempo e distancia com 0
-    timeTo[vOrigem] = 0;
-    distTo[vOrigem] = 0;
-
-    double tempoTotal = 0;
-    int instanteAtualizacao = 0;
-    int atualizacaoAtual = 0;
-
-    // Enquanto a priority queue nao estiver vazia
-    while (!PQ_empty(pq)) {
-        // Remove o elemento com menor prioridade
-        Item p = PQ_delmin(pq,map);
-        int vertice = id(p);
-        double value = value(p);
-
-        // Coleta o tempo total decorrido
-        tempoTotal = timeTo[vertice];
-
-        // Verifica se ha atualizacoes no vetor e varre as atualizacoes que ocorrem apos o tempo decorrido atual
-            while (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes) && (tempoTotal) >= getInstanteAtualizacao(*atualizacoes,getUltimaAtualizacao(*atualizacoes))) {
-            // Obtem a atualizacao atual e o instante que ela ocorre
-            atualizacaoAtual = getUltimaAtualizacao(*atualizacoes);
-            instanteAtualizacao = getInstanteAtualizacao(*atualizacoes,atualizacaoAtual);
-
-            // Atualiza o grafo com as novas atualizacoes
-            atualizaGrafo(grafo,getOrigemAtualizacao(*atualizacoes,atualizacaoAtual),getDestinoAtualizacao(*atualizacoes,atualizacaoAtual),getVelocidadeAtualizacao(*atualizacoes,atualizacaoAtual));
-                
-            // Atualiza para a proxima atualizacao
-            setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
-        }
-
-        // Para cada vertice adjacente ao vertice removido
-        for (Node* adj = getListaAdjacencia((*grafo),vertice); adj != NULL; adj = getProx(adj)) {
-            // Obtem o vertice origem, destino, tempo e distancia
-            int v = getOrigem(adj);
-            int w = getDestino(adj);
-            double tempo = getTempo(adj);
-            double distancia = getDistancia(adj);
-            
-            // Atualiza a fila de prioridades caso o tempo para o vertice destino seja menor que o tempo atual
-            if (timeTo[w] > timeTo[v] + tempo) {
-                timeTo[w] = timeTo[v] + tempo;
-                distTo[w] = distTo[v] + distancia;
-                edgeTo[w] = v;
-                
-                // Verifica se o vertice destino ja esta na priority queue
-                if (PQ_contains(pq,w)) {
-
-                    // Atualiza a prioridade do item
-                    PQ_decrease_key(pq,map,w,timeTo[w]);
-                } else {
-
-                    // Insere na priority queue
-                    PQ_insert(pq,map,make_item(w,timeTo[w]));
-                }
-            }
-        }
-    }
-
-    // Atribui o tempo decorrido final e a distancia as variaveis de saida
-    *tempoDecorrido = timeTo[vDestino];
-    *distanciaPercorrida = distTo[vDestino];
-
-    // Libera os vetores auxiliares de tempo e distancia
-    free(timeTo);
-    free(distTo);
-
-    // Retorna o vetor com o menor caminho
-    return edgeTo;
-}
-
-
-int* dijkstra2(Grafo** grafo, int vOrigem, int vDestino) {
+int* dijkstra(Grafo** grafo, int vOrigem, int vDestino) {
     
     // Inicializa os vetores de tempo, distancia e adjacentes
     int* edgeTo = (int*) calloc(getVertices(*(grafo)), sizeof(int));
@@ -175,10 +77,18 @@ int* dijkstra2(Grafo** grafo, int vOrigem, int vDestino) {
     return edgeTo;
 }
 
+// Funcao que executa o algoritmo de Dijkstra em loop
+// Entrada: grafo - Grafo
+//          vOrigem - Vertice de origem
+//          vDestino - Vertice de destino
+//          atualizacoes - Lista de atualizacoes
+//          tempoDecorrido - Tempo decorrido
+//          distanciaPercorrida - Distancia percorrida
+// Saida:   int* - Vetor com o menor caminho final
 int* DijkstraLoop(Grafo** grafo,int vOrigem, int vDestino, Atualizacoes** atualizacoes, double* tempoDecorrido, double* distanciaPercorrida) {
 
+    // Variaveis temporarias
     int origemTemp = vOrigem;
-
     double tempoTotal = 0;
     double distanciaTotal = 0;
     int atualizacaoAtual = 0;
@@ -189,7 +99,11 @@ int* DijkstraLoop(Grafo** grafo,int vOrigem, int vDestino, Atualizacoes** atuali
     edgeTo[i] = vOrigem;
 
     int* caminho = NULL;
+
+    // Enquanto o vertice de origem nao for o vertice de destino
     while(origemTemp != vDestino) {
+
+        // Enquanto houver atualizacoes e o tempo total for maior ou igual ao instante da atualizacao
         while (getUltimaAtualizacao(*atualizacoes) < getNAtual(*atualizacoes) && (tempoTotal) >= getInstanteAtualizacao(*atualizacoes,getUltimaAtualizacao(*atualizacoes))) {
         // Obtem a atualizacao atual e o instante que ela ocorre
         atualizacaoAtual = getUltimaAtualizacao(*atualizacoes);
@@ -199,30 +113,47 @@ int* DijkstraLoop(Grafo** grafo,int vOrigem, int vDestino, Atualizacoes** atuali
         // Atualiza para a proxima atualizacao
         setUltimaAtualizacao(atualizacoes,atualizacaoAtual+1);
         }
+
+        // Se o caminho nao for nulo libera a memoria temporaria
         if (caminho != NULL) {
             free(caminho);
         }
-        caminho = dijkstra2(grafo,origemTemp,vDestino);
-        proxVertice = buscaProxVertice(caminho, origemTemp, vDestino, getVertices(*grafo)); // varre o caminho e retorna o proximo vertice
 
-        tempoTotal += getTempoEntreVertices(*grafo,origemTemp,proxVertice); // buscar tempo de origemTemp a proxVertice
-        //printf("%d -> %d\n",origemTemp,proxVertice);
-        //printf("Tempo total: %lf\n",tempoTotal);
-        distanciaTotal += getDistanciaEntreVertices(*grafo,origemTemp,proxVertice); // buscar distancia de origemTemp a proxVertice
-        //printf("Distancia total: %lf\n",distanciaTotal);
+        // Obtem o menor caminho atual
+        caminho = dijkstra(grafo,origemTemp,vDestino);
+        
+        // Obtem o proximo vertice do caminho
+        proxVertice = buscaProxVertice(caminho, origemTemp, vDestino);
+
+        // Incrementa o tempo total e a distancia total
+        tempoTotal += getTempoEntreVertices(*grafo,origemTemp,proxVertice);
+        distanciaTotal += getDistanciaEntreVertices(*grafo,origemTemp,proxVertice);
+
+        // Adiciona o vertice atual ao vetor de menor caminho final
         edgeTo[i+1] = proxVertice;
+
+        // Avanca para o proximo vertice
         origemTemp = proxVertice;
         i++;
     }
 
+    // Atualiza o tempo decorrido e a distancia percorrida
     *tempoDecorrido = tempoTotal;
     *distanciaPercorrida = distanciaTotal;
+
+    // Libera a memoria temporaria
     free(caminho);
+
     return edgeTo;
     
 }
 
-int* retornaCaminhoTerminal(int* vetor, int vOrigem, int vDestino) {
+// Funcao que retorna o caminho entre dois vertices
+// Entrada: vetor - vetor com os vertices
+//          vOrigem - vertice de origem
+//          vDestino - vertice de destino
+// Saida:   int* - vetor com o caminho
+int* retornaCaminho(int* vetor, int vOrigem, int vDestino) {
     int tamanho = 0;
 
     // Verifica o tamanho do caminho
@@ -248,8 +179,13 @@ int* retornaCaminhoTerminal(int* vetor, int vOrigem, int vDestino) {
     return caminho;
 }
 
-int buscaProxVertice(int* v, int origem, int destino, int size) {
-    int* caminho = retornaCaminhoTerminal(v, origem, destino);
+// Funcao que busca o proximo vertice do caminho
+// Entrada: v - vetor com o caminho
+//          origem - vertice de origem
+//          destino - vertice de destino
+// Saida:   int - proximo vertice do caminho
+int buscaProxVertice(int* v, int origem, int destino) {
+    int* caminho = retornaCaminho(v, origem, destino);
     int vertice = caminho[1];
     free(caminho);
     return vertice;
