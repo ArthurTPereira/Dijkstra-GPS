@@ -34,5 +34,6 @@ double getDistancia(Node* node);
 double getTempo(Node* node);
 
 int getOrigem(Node* node);
-
+double getTempoEntreVertices(Grafo* grafo, int origem, int destino);
+double getDistanciaEntreVertices(Grafo* grafo, int origem, int destino);
 #endif

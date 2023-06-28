@@ -12,5 +12,5 @@ FILE* abreArquivoSaida(char* nomeArquivoSaida);
 void fechaArquivo(FILE* arquivo);
 
 void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double tempoDecorrido, double distanciaPercorrida);
-
+void imprimeCaminhoTerminal(int* vetor, int vOrigem, int vDestino);
 #endif

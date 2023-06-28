@@ -27,21 +27,16 @@ int main(int argc, char *argv[]) {
     // Fecha o arquivo de entrada
     fechaArquivo(arquivoEntrada);
 
-    // Inicializa a priority queue e o vetor de mapeamento
-    Item* pq;
-    int* map;
-    PQ_init(&pq,&map,nVertices);
-
     // Variaveis de distancia e tempo
     double distanciaPercorrida = 0;
     double tempoPercorrido = 0;
 
     // Executa o algoritmo de Dijkstra
-    int* edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map, &tempoPercorrido, &distanciaPercorrida);
-
+    //int* edgeTo = dijkstra(&grafo, vOrigem, vDestino, &atualizacoes, pq, map, &tempoPercorrido, &distanciaPercorrida);
+    int* edgeTo = DijkstraLoop(&grafo,vOrigem,vDestino, &atualizacoes, &tempoPercorrido, &distanciaPercorrida);
     // Abre o arquivo de saida
     FILE* arquivoSaida = abreArquivoSaida(argv[2]);
-    
+
     // Imprime o menor caminho, o tempo decorrido e a distancia percorrida
     imprimeArquivo(arquivoSaida, edgeTo, vOrigem, vDestino, tempoPercorrido, distanciaPercorrida);
     
@@ -49,7 +44,7 @@ int main(int argc, char *argv[]) {
     free(edgeTo);
 
     // Libera a priority queue e o vetor de mapeamento
-    PQ_finish(pq,map);
+    
 
     // Fecha o arquivo de saida
     fechaArquivo(arquivoSaida);

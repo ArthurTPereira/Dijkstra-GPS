@@ -60,27 +60,19 @@ void fechaArquivo(FILE* arquivo) {
 //          vDestino - vertice de destino
 //          fp - ponteiro para o arquivo de saida
 // Saida:   void
-void imprimeCaminho(FILE* fp, int* vetor, int vOrigem, int vDestino) {
+void imprimeCaminho(FILE* fp, int* vetor) {
+    int i = 0;
+    int ultimoValor = 0;
 
-    // Caso o vertice de destino seja igual ao vertice de origem
-    if (vetor[vDestino] == 0) {
-        fprintf(fp,"%d;", vOrigem);
-        return;
+    // Encontra o último valor do vetor diferente de zero
+    while (vetor[i+1] != 0) {
+        ultimoValor = vetor[i+1];
+        fprintf(fp, "%d;", vetor[i]);
+        i++;
     }
-    
-    // Chamada recursiva para imprimir o menor caminho
-    imprimeCaminho(fp, vetor, vOrigem, vetor[vDestino]);
 
-    // Verificador estatico para nao imprimir o ponto e virgula no ultimo vertice do caminho
-    static int primeiro = 1;
-
-    // Imprime o vertice
-    if (primeiro) {
-        fprintf(fp,"%d", vDestino);
-        primeiro = 0;
-    } else {
-        fprintf(fp,";%d", vDestino);
-    }
+    // Imprime o último valor sem ponto e vírgula
+    fprintf(fp, "%d", ultimoValor);
 }
 
 // Funcao que imprime o tempo decorrido final
@@ -127,7 +119,7 @@ void imprimeDistancia(FILE* fp, double distanciaPercorrida){
 // Saida:   void
 void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double tempoDecorrido, double distanciaPercorrida) {
     // Imprime o menor caminho
-    imprimeCaminho(fp, vetor, vOrigem, vDestino);
+    imprimeCaminho(fp, vetor);
     
     // Quebra de linha
     fprintf(fp,"\n");
@@ -135,4 +127,28 @@ void imprimeArquivo(FILE* fp, int* vetor, int vOrigem, int vDestino, double temp
     // Imprime a distancia e o tempo decorrido
     imprimeDistancia(fp, distanciaPercorrida);
     imprimeTempo(fp, tempoDecorrido);
+}
+
+
+void imprimeCaminhoTerminal(int* vetor, int vOrigem, int vDestino) {
+
+    // Caso o vertice de destino seja igual ao vertice de origem
+    if (vetor[vDestino] == 0) {
+        printf("%d;", vOrigem);
+        return;
+    }
+    
+    // Chamada recursiva para imprimir o menor caminho
+    imprimeCaminhoTerminal(vetor, vOrigem, vetor[vDestino]);
+
+    // Verificador estatico para nao imprimir o ponto e virgula no ultimo vertice do caminho
+    static int primeiro = 1;
+
+    // Imprime o vertice
+    if (primeiro) {
+        printf("%d", vDestino);
+        primeiro = 0;
+    } else {
+        printf(";%d", vDestino);
+    }
 }

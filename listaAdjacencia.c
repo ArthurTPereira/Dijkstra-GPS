@@ -215,3 +215,25 @@ double getTempo(Node* node) {
 int getOrigem(Node* node) {
     return node->origem;
 }
+
+double getTempoEntreVertices(Grafo* grafo, int origem, int destino) {
+    Node* p = grafo->vetor[origem]->inicio;
+    while (p != NULL) {
+        if (p->destino == destino) {
+            return p->tempo;
+        }
+        p = p->prox;
+    }
+    return -1;
+}
+
+double getDistanciaEntreVertices(Grafo* grafo, int origem, int destino) {
+    Node* p = grafo->vetor[origem]->inicio;
+    while (p != NULL) {
+        if (p->destino == destino) {
+            return p->distancia;
+        }
+        p = p->prox;
+    }
+    return -1;
+}
